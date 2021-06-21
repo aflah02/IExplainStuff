@@ -83,3 +83,17 @@
 
 - 68.7 MOTA on MOT17 at 20.3 FPS with no external data
 - 10 points MOTA increase and significantly reduces the number of ID switches on BDD100K and Waymo datasets
+
+## 2. Related Work
+
+- Recent focus in MOT is on the tracking-by-detection paradigm. The given approaches present different methods to estimate the instance similarity between detected objects and previous tracks, then associate objects as a bipartite matching problem.
+
+---
+### Location and Motion in MOT
+
+- In crowded scenes spatial proximity fails while it works in less crowded frames to associate objects between successive frames.
+- Earlier models use to detect objects and track displacement separtely. Methods such as Kalman Filter which uses multiple measurements over time to produce estimates over time in data with noise, Optical Flow which is the distribution of apparent velocities of movement of brightness pattern in an image, and displacement regression.
+- Detect & Track was the first work which jointly optimizes both the tasks of detection and tracking. It predicts object displacement in consecutive frames using the [Viterbi Algorithm](https://en.wikipedia.org/wiki/Viterbi_algorithm).
+- Tracktor directly uses a detector as a tracker
+- CenterTrack & Chained-Tracker predict the object displacements with pair-wise inputs to associate the objects.
+- The above mentioned models are good but need to built further to be usable such as the need for an extra re-identification model which will make the frameworks more complex.
