@@ -140,12 +140,15 @@
 - Region proposals are used to learn instance similarity with Quasi-dense matchmaking.
 
 ---
+
 Figure 2
 
 - We have a chosen Key and randomly picked Reference Frame from it's temporal neighbourhood.
 - The neighbourhood is defined using a neighbour distance which lies in an interval k. For the paper k belonged to the set [-3, 3].
 - Then we apply the subsequently explained process
+
 ---
+
 - Our RPN generates ROIs from the 2 images, and then we use ROI Align (It is an operation for extracting a small feature map from each RoI in detection and segmentation based tasks) to obtain their feature maps from different levels in FPN according to their scales. So we get feature maps for different RoIs made by the RPN.
 - We then add an extra light weight embedding head in parallel to the original bounding box head which extracts features from each RoI. 
 - Two thresholds α1 and α2 are defined. An IoU more than α1 is defined to say that the ROI is positive to an object while one less than α2 is said to say that the ROI is negative to an object. The authors used the values 0.7 and 0.3 respectively.
@@ -168,4 +171,46 @@ Figure 2
 
 ### 3.3 Object Association
 
-- 
+It is not at all trivial how we're going to use all this stuff we've built so far to track objects. Heck, does it even make sense aren't all we doing just some boring maths?
+
+Let's try to make some sense of what we are doing
+
+- Suppose you have an object and you get no or more than one target, what do you do? Your nearest neighbour logic will cease to work, so for the current model to work you need to have only one target in the matching candidates
+
+- Due to various issues such as false positives, id switches, newly appeared objects (ofcourse they do when you drive for instance) and terminated tracks all make it much more non trivial to understand the tracking process or even build one in the first place.
+
+- Now the authors come to our rescue. They observed that their inference strategy worked well which includes ways of maintaining matching candidates and measuring instance similarity can mitigate these problems.
+
+***Bi-directional Softmax***
+
+- Our inference strategy is mainly to use Bi-directional matching in the embedding space.
+![Bi-directional Matching](https://www.researchgate.net/profile/Jean-Luc-Dugelay/publication/253414722/figure/fig2/AS:667661465825291@1536194306850/Bidirectional-matching.png)
+- A high score using the bi-softmax will satisfy bi-directional consistency. Going back to our nearest neighbour technique, the two matched objects should be nearest neighbours in the embedding space. This is the instance similarity in some sense. Using this instance similarity you can easily associate objects using nearest neighbour search.
+- The mathematical formulation is as follows - 
+![Bi-directional Softmax](/Assets/QDTrackBiDiSoftmax.PNG)
+- Here we assume there are N detected objects in frame t with feature embeddings n, and M matching candidates with feature embeddings m from the past x frames. This formula returns the similarity f between the objects and their matching candidates.
+
+***No Target Cases***
+
+- The objects which don't have a target in the feature space such as newly appeared objects, vanished tracks and false positives should not be matched to any candidates. 
+- The bi-softmax does the job for us as it does not give these objects any bi-directional consistency leading to low matching scores. 
+- If incase we detect a new object and it has high detection confidence then we can start off a new track fot it but what we've been following so far would just drop the object instead.
+- The authors put forward their point that even thought these can lead to false positives they can still be useful in several regions where they match others.
+- These unmatched objects were termed as backdrops and kept in the matching process by the authors.
+- Some experiments have also shown that backdrops were able to reduce number of backdrops.
+
+***Multi-Target Classes***
+
+- Other top models use [None Maximum Suppression (NMS)](https://towardsdatascience.com/non-maximum-suppression-nms-93ce178e177c) for intra class removal.
+
+![NMS](https://miro.medium.com/max/788/1*iVUDd4fYhL5evD1M5156DA.png)
+
+![NMS](https://miro.medium.com/max/788/1*6d_D0ySg-kOvfrzIRwHIiA.png)
+
+- But the problem arises that some objects might be in the same location but have different classes and usually only one of them is out required prediction. 
+
+- This process can boost the object recall and increase our [mean Average Prediction (mAP)](https://towardsdatascience.com/map-mean-average-precision-might-confuse-you-5956f1bfa9e2)
+
+- This process has a downfall of creating duplicate feature embeddings to deal with which we do inter class duplicate removal using NMS.
+
+- The IoU threshold for NMS is 0.7 for objects with high confidence (larger than 0.5) and 0.3 for objects with lower detection confidence (lower than 0.5).
