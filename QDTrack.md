@@ -128,9 +128,11 @@
 - The method in the paper can be coupled with most existing detectors for end to end training such as R-CNNs, YOLO etc.
 - In the paper they've chosen [Faster R-CNN with Feature Pyramid Network (FPN)](https://towardsdatascience.com/review-fpn-feature-pyramid-network-object-detection-262fc7482610).
 - Faster R-CNN comprises of 2 stages. It uses Region Proposal Network (RPN) to generate Region of Interests (RoIs). It then localizes and classifies the regions to obtain semantic labels and locations. 
+
 ![RPN and RoIs](https://miro.medium.com/max/516/1*WJsEQnhr4puR4k-29uD80Q.png)
 - Then FPN exploits lateral connections to build the top-down feature pyramid and tackles the scale-variance problem.
 - A multi-task loss function is used to optimize the network given by - 
+
 ![Loss Function](/Assets/QDTrackloss.PNG)
 
 ### 3.2 Quasi-dense Similarity Learning
@@ -164,3 +166,6 @@ Figure 2
 - Finally we can bring all out losses under one roof to optimize our network as follows - 
 ![Joint Loss](/Assets/JointLoss.PNG)
 
+### 3.3 Object Association
+
+- 
