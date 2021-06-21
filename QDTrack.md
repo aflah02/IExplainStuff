@@ -181,6 +181,16 @@ Let's try to make some sense of what we are doing
 
 - Now the authors come to our rescue. They observed that their inference strategy worked well which includes ways of maintaining matching candidates and measuring instance similarity can mitigate these problems.
 
+---
+### Figure 3
+![Figure 3](Assets/QDTrackFig3.PNG)
+
+- We extract embeddings from the reference and key frames.
+- They pass through a bi-directional softmax and we get to know the instance similarity between the object and the matching candidate.
+- The higher the instace similarity the closer it will be in the feature space and the easier it will be to find using simple nearest neighbour search.
+- We notice in the last part of the image when BackDrops are not in place we miss out on some objects while with BackDrops they are easy to track.
+---
+
 ***Bi-directional Softmax***
 
 - Our inference strategy is mainly to use Bi-directional matching in the embedding space.
