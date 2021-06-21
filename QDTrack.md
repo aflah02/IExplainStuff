@@ -57,4 +57,29 @@
 
 - These quasi dense samples are able to cover most info. regions giving more box examples and hard negatives.
 
-- 
+- One simple approach was to use a handful of ground truth labels. However the paper uses another approach which enhances similarity learning. Since each sample has many positive samples on the original image we can extend out contrastive learning process to account for those multiple forms which makes quasi-dense learning feasible. So each sample is trained to distinguish all proposals on the other image simultaneously.
+
+- Apart from looking for similarity MOT needs to look for false positives, id switches, new appeared objects and terminated tracks.
+
+---
+### How to Tackle Missing Targets - 
+
+- We include backdrops
+- We also include the unmatched objects which remain in the last frame to match them
+- We also use a bidirectional softmax to ensure bidirectional consistency.
+
+### How to Tackle Multiple Targets - 
+
+- We use duplicate removal to remove multiple targets and filter out matching candidates
+
+---
+
+- Quasi-dense contrastive learning can be used on top of pre-existing detectors such as R-CNNs or YOLO.
+
+- The paper uses it on top of Faster R-CNN while applying a light weight embedding extractor and residual connections in the network.
+
+---
+### Benchmarks Attained by the Model - 
+
+- 68.7 MOTA on MOT17 at 20.3 FPS with no external data
+- 10 points MOTA increase and significantly reduces the number of ID switches on BDD100K and Waymo datasets
