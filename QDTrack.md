@@ -111,4 +111,4 @@
 - It is very successful in self-supervised representation learning which is a way of training a deep learning model with labels inherently obtained from the data itself.
 - It is still not very used to get instance similarity in MOT.
 - The paper essentially takes dense matched quasi-dense samples and supervises them with multiple positive contrastive learning.
-- Unlike image-level constrastive methods out method allows for multiple positive training while in other methods there is only one positive target.
+- Unlike image-level constrastive methods out method allows for multiple positive training while in other methods there is only one positive target. H
