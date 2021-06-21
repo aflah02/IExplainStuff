@@ -204,7 +204,7 @@ Let's try to make some sense of what we are doing
 
 - The objects which don't have a target in the feature space such as newly appeared objects, vanished tracks and false positives should not be matched to any candidates. 
 - The bi-softmax does the job for us as it does not give these objects any bi-directional consistency leading to low matching scores. 
-- If incase we detect a new object and it has high detection confidence then we can start off a new track fot it but what we've been following so far would just drop the object instead.
+- If incase we detect a new object and it has high detection confidence then we can start off a new track for it but what we've been following so far would just drop the object instead.
 - The authors put forward their point that even thought these can lead to false positives they can still be useful in several regions where they match others.
 - These unmatched objects were termed as backdrops and kept in the matching process by the authors.
 - Some experiments have also shown that backdrops were able to reduce number of backdrops.
