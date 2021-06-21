@@ -111,4 +111,56 @@
 - It is very successful in self-supervised representation learning which is a way of training a deep learning model with labels inherently obtained from the data itself.
 - It is still not very used to get instance similarity in MOT.
 - The paper essentially takes dense matched quasi-dense samples and supervises them with multiple positive contrastive learning.
-- Unlike image-level constrastive methods out method allows for multiple positive training while in other methods there is only one positive target. H
+- Unlike image-level constrastive methods out method allows for multiple positive training while in other methods there is only one positive target.
+
+## 3. Methodology
+
+- Proposed Quasi-dense matching to learn the feature embedding space to associate identical objects and distinguish different objects for online multiple object tracking.
+- Dense matching is matching between box candidates at all pixels. Dense image matching takes an alternative approach to obtain a corresponding point for almost every pixel in the image. Rather than searching the entire image for features, it will compare two overlapping images row by row. Essentially, this reduces the problem to a much simpler one-dimensional search.
+![Dense Matching](https://www.gim-international.com/cache/e/d/e/6/3/ede635bc1c509adf7d388869902654ab2a7b3b23.png)
+- In Quasi-Dense matching one matches box candidates by only considering the potential object candidates at information regions.
+- In Sparse Matching the user only considers ground truth labels as matching candidates while learning object association
+![Matching](https://homepages.inf.ed.ac.uk/rbf/CAMERA/RESULTS/YEAR3/dense_matching.gif)
+### Quasi Dense Matching Comprises of the following - 
+---
+### 3.1 Object Detection
+
+- The method in the paper can be coupled with most existing detectors for end to end training such as R-CNNs, YOLO etc.
+- In the paper they've chosen [Faster R-CNN with Feature Pyramid Network (FPN)](https://towardsdatascience.com/review-fpn-feature-pyramid-network-object-detection-262fc7482610).
+- Faster R-CNN comprises of 2 stages. It uses Region Proposal Network (RPN) to generate Region of Interests (RoIs). It then localizes and classifies the regions to obtain semantic labels and locations. 
+![RPN and RoIs](https://miro.medium.com/max/516/1*WJsEQnhr4puR4k-29uD80Q.png)
+- Then FPN exploits lateral connections to build the top-down feature pyramid and tackles the scale-variance problem.
+- A multi-task loss function is used to optimize the network given by - 
+![Loss Function](./Assets/QDTrackloss.png)
+
+### 3.2 Quasi-dense Similarity Learning
+
+- Region proposals are used to learn instance similarity with Quasi-dense matchmaking.
+
+---
+Figure 2
+
+- We have a chosen Key and randomly picked Reference Frame from it's temporal neighbourhood.
+- The neighbourhood is defined using a neighbour distance which lies in an interval k. For the paper k belonged to the set [-3, 3].
+- Then we apply the subsequently explained process
+---
+- Our RPN generates ROIs from the 2 images, and then we use ROI Align (It is an operation for extracting a small feature map from each RoI in detection and segmentation based tasks) to obtain their feature maps from different levels in FPN according to their scales. So we get feature maps for different RoIs made by the RPN.
+- We then add an extra light weight embedding head in parallel to the original bounding box head which extracts features from each RoI. 
+- Two thresholds α1 and α2 are defined. An IoU more than α1 is defined to say that the ROI is positive to an object while one less than α2 is said to say that the ROI is negative to an object. The authors used the values 0.7 and 0.3 respectively.
+- So if the two regions associate to the same object then ROI is +ve else it is -ve, since if they associate to the same object they will have a higher IoU and vice-a-versa.
+- Non-parametric softmax with cross entropy is used to optimize the feature embeddings.
+![Embedding Loss](./Assets/QDTrackEmbeddingloss.png)
+- v here is the feature embeddings for the training sample, k+ for the positive target and k- for the negative target. This is then averaged over all training examples.
+- Now we extend this relation to dense matchin between RoIs on the image pair so each sample in image 1 is matched to each sample in image 2. This allows us to learn instance similarity. 
+- Since there are multiple training targets we extend the above equation as follows - 
+![Embedding Loss](./Assets/QDTrackEmbeddinglossExtended.png)
+- On closer inspection however you'll again notice that the postive terms are undercounted, how? well for each positive samples you count multiple negative samples due to the summation in the denominator of the expression.
+- So we first recompute out first equation over one positive example as follows - 
+![Embedding Loss](./Assets/QDTrackEmbeddingLossRedo.png)
+- Then we begin to consider the multiple positive scenarios as follows - 
+![Embedding Loss](./Assets/QDTrackEmbeddingLossRedoExtended.png)
+- The paper authors also decided to use L2 loss as an auxiliary loss to try to constrain the logit magnitude and cosine similarity. The relation uses c to be 1 when the ROI is positive to an object else it is 0.
+![Auxiliary Loss](./Assets/AuxLoss.png)
+- Finally we can bring all out losses under one roof to optimize our network as follows - 
+![Joint Loss](./Assets/JointLoss.png)
+
