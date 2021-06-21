@@ -131,7 +131,7 @@
 ![RPN and RoIs](https://miro.medium.com/max/516/1*WJsEQnhr4puR4k-29uD80Q.png)
 - Then FPN exploits lateral connections to build the top-down feature pyramid and tackles the scale-variance problem.
 - A multi-task loss function is used to optimize the network given by - 
-![Loss Function](/Assets/QDTrackloss.png)
+![Loss Function](/Assets/QDTrackloss.PNG)
 
 ### 3.2 Quasi-dense Similarity Learning
 
@@ -149,18 +149,18 @@ Figure 2
 - Two thresholds α1 and α2 are defined. An IoU more than α1 is defined to say that the ROI is positive to an object while one less than α2 is said to say that the ROI is negative to an object. The authors used the values 0.7 and 0.3 respectively.
 - So if the two regions associate to the same object then ROI is +ve else it is -ve, since if they associate to the same object they will have a higher IoU and vice-a-versa.
 - Non-parametric softmax with cross entropy is used to optimize the feature embeddings.
-![Embedding Loss](/Assets/QDTrackEmbeddingloss.png)
+![Embedding Loss](/Assets/QDTrackEmbeddingloss.PNG)
 - v here is the feature embeddings for the training sample, k+ for the positive target and k- for the negative target. This is then averaged over all training examples.
 - Now we extend this relation to dense matchin between RoIs on the image pair so each sample in image 1 is matched to each sample in image 2. This allows us to learn instance similarity. 
 - Since there are multiple training targets we extend the above equation as follows - 
-![Embedding Loss](/Assets/QDTrackEmbeddinglossExtended.png)
+![Embedding Loss](/Assets/QDTrackEmbeddinglossExtended.PNG)
 - On closer inspection however you'll again notice that the postive terms are undercounted, how? well for each positive samples you count multiple negative samples due to the summation in the denominator of the expression.
 - So we first recompute out first equation over one positive example as follows - 
-![Embedding Loss](/Assets/QDTrackEmbeddingLossRedo.png)
+![Embedding Loss](/Assets/QDTrackEmbeddingLossRedo.PNG)
 - Then we begin to consider the multiple positive scenarios as follows - 
-![Embedding Loss](/Assets/QDTrackEmbeddingLossRedoExtended.png)
+![Embedding Loss](/Assets/QDTrackEmbeddingLossRedoExtended.PNG)
 - The paper authors also decided to use L2 loss as an auxiliary loss to try to constrain the logit magnitude and cosine similarity. The relation uses c to be 1 when the ROI is positive to an object else it is 0.
-![Auxiliary Loss](/Assets/AuxLoss.png)
+![Auxiliary Loss](/Assets/AuxLoss.PNG)
 - Finally we can bring all out losses under one roof to optimize our network as follows - 
-![Joint Loss](/Assets/JointLoss.png)
+![Joint Loss](/Assets/JointLoss.PNG)
 
