@@ -88,7 +88,6 @@
 
 - Recent focus in MOT is on the tracking-by-detection paradigm. The given approaches present different methods to estimate the instance similarity between detected objects and previous tracks, then associate objects as a bipartite matching problem.
 
----
 ### Location and Motion in MOT
 
 - In crowded scenes spatial proximity fails while it works in less crowded frames to associate objects between successive frames.
@@ -97,3 +96,19 @@
 - Tracktor directly uses a detector as a tracker
 - CenterTrack & Chained-Tracker predict the object displacements with pair-wise inputs to associate the objects.
 - The above mentioned models are good but need to built further to be usable such as the need for an extra re-identification model which will make the frameworks more complex.
+
+### Appearence Similarity in MOT
+
+- Some models use an independent model or add an extra embedding head to the detector for end to end training to leverage the instance appearence similarity which strengthens tracking of the same object from one frame to the other while also giving us the power to reidentify vanished objects.
+- Still the basic underlying similarity learning process is the same i.e. they use the cosine distance. So they use a n-classes classification problem where n represents the total number of classes in which we have to classify the objects or use the triplet loss function (visual below).
+![Visual Triplet Loss](https://1.bp.blogspot.com/-2a4d-v0SkJo/XSHWs7H5a-I/AAAAAAAAEJ0/Qh4SNnksF9sPZ6L8wf0_ta3s7J05hI3VwCLcBGAs/s640/Screen%2BShot%2B2019-07-07%2Bat%2B1.24.36%2BPM.png)
+- Since triplet loss only compares one image to two others it's hard to extend this to larger datasets. Hence MOT doesn't fully leverage Similarity Learning on the other hand QDTrack learns instance similarity from dense-connected contrastive pairs and associate objects present in the feature space with a simple nearest neighbour search (visual below). 
+
+![Nearest Neighbour Search](https://rahvee.gitlab.io/comparison-nearest-neighbor-search/img/fig3.png)
+
+### Constrastive Learning
+
+- It is very successful in self-supervised representation learning which is a way of training a deep learning model with labels inherently obtained from the data itself.
+- It is still not very used to get instance similarity in MOT.
+- The paper essentially takes dense matched quasi-dense samples and supervises them with multiple positive contrastive learning.
+- Unlike image-level constrastive methods out method allows for multiple positive training while in other methods there is only one positive target.
