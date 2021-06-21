@@ -1,12 +1,12 @@
 # Quasi-Dense Similarity Learning for Multiple Object Tracking
 
-- Paper - https://arxiv.org/abs/2006.06664
-- Official Repo - https://github.com/SysCV/qdtrack
-- Paper with Codes Page - https://paperswithcode.com/paper/quasi-dense-instance-similarity-learning
-- MOT Dataset - https://motchallenge.net/
-- BDD100K Dataset - https://bair.berkeley.edu/blog/2018/05/30/bdd/
-- Waymo Dataset - https://waymo.com/open/
-- TAO Dataset - https://taodataset.org/
+- [Paper](https://arxiv.org/abs/2006.06664)
+- [Official Repo](https://github.com/SysCV/qdtrack)
+- [Paper with Codes Page](https://paperswithcode.com/paper/quasi-dense-instance-similarity-learning)
+- [MOT Dataset](https://motchallenge.net/)
+- [BDD100K Dataset](https://bair.berkeley.edu/blog/2018/05/30/bdd/)
+- [Waymo Dataset](https://waymo.com/open/)
+- [TAO Dataset](https://taodataset.org/)
 
 ## Abstract 
 

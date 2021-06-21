@@ -1,3 +1,9 @@
+# A Dynamic Recurrent Model for Next Basket Recommendation (DREAM)
+
+- [Paper](https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/A%20Dynamic%20Recurrent%20Model%20for%20Next%20Basket%20Recommendation.pdf)
+- [Dataset](https://www.kaggle.com/c/instacart-market-basket-analysis)
+- [Github Repo](https://github.com/yihong-chen/DREAM)
+---
 Note all Configs are defined in constants.py as a dictionary DREAM_CONFIG. They are later used with help of config.py which is imported throughout.
 
 # dream.py
@@ -31,12 +37,12 @@ from torch.autograd import Variable:
 
 #### init_weight
 
-- The weights are initialized in the range uniform weight -0.1 and +0.1 uniformly. More insight can be gained at https://stackoverflow.com/a/55546528/13858953
+- The weights are initialized in the range uniform weight -0.1 and +0.1 uniformly. More insight can be gained [here](https://stackoverflow.com/a/55546528/13858953)
   
 #### init_hidden
 
 - self.parameters() is a generator method that iterates over the parameters of the model. next retrieves the next item from the iterator by calling its next() method. Here, it returns the first parameter from the class.
-- Now if the RNN type is LSTM or not we branch into 2 conditionals and then weight.new() creates a tensor that has the same data type, same device as the produced parameter. You can create a Variable in any fashion, but you need to specify the data type under such circumstance. For more insight read https://discuss.pytorch.org/t/what-does-next-self-parameters-data-mean/1458
+- Now if the RNN type is LSTM or not we branch into 2 conditionals and then weight.new() creates a tensor that has the same data type, same device as the produced parameter. You can create a Variable in any fashion, but you need to specify the data type under such circumstance. For more insight read [this](https://discuss.pytorch.org/t/what-does-next-self-parameters-data-mean/1458)
 - As far as I could understand zero_() is used to zero all gradients at the start of a minibatch. Also the parameters inside weight.new seem to indicate the dimensions. 
 - Since the original code was written Variable has been deprecated. It still works as expected, but returns Tensors instead of Variables.
 
@@ -66,7 +72,7 @@ from torch.autograd import Variable:
 
 - We train the Dream model using this. 
 - We build a hidden layer. 
-- We then iterate, the batchify() function arranges the dataset into columns, trimming off any tokens remaining after the data has been divided into batches of size batch_size. For more insight read here - https://pytorch.org/tutorials/beginner/transformer_tutorial.html
+- We then iterate, the batchify() function arranges the dataset into columns, trimming off any tokens remaining after the data has been divided into batches of size batch_size. For more insight read [here](https://pytorch.org/tutorials/beginner/transformer_tutorial.html)
 - In each iteration we find the bpr_loss and then compute it's gradient.
 - The gradients are clipped as well based on the estabilished clip in the constants.
 - get_grad_norm gets the norm of the gradients
@@ -111,7 +117,7 @@ from torch.autograd import Variable:
 
 - item_embedding are generated
 - .eval() is called to stop dropout etc.
-- You recreate the hidden layer using dr_model.init_hidden(dr_model.config.batch_size). The hidden state stores the internal state of the RNN from predictions made on previous tokens in the current sequence, this allows RNNs to understand context. The hidden state is determined by the output of the previous token. When you predict for the first token of any sequence, if you were to retain the hidden state from the previous sequence your model would perform as if the new sequence was a continuation of the old sequence which would give worse results. Instead for the first token you initialise an empty hidden state, which will then be filled with the model state and used for the second token. Think about it this way: if someone asked you to classify a sentence and handed you the US constitution (irrelevant information) vs. if someone gave you some background context about the sentence and then asked you to classify the sentence. The explanation is taken from - https://stackoverflow.com/a/55351254/13858953
+- You recreate the hidden layer using dr_model.init_hidden(dr_model.config.batch_size). The hidden state stores the internal state of the RNN from predictions made on previous tokens in the current sequence, this allows RNNs to understand context. The hidden state is determined by the output of the previous token. When you predict for the first token of any sequence, if you were to retain the hidden state from the previous sequence your model would perform as if the new sequence was a continuation of the old sequence which would give worse results. Instead for the first token you initialise an empty hidden state, which will then be filled with the model state and used for the second token. Think about it this way: if someone asked you to classify a sentence and handed you the US constitution (irrelevant information) vs. if someone gave you some background context about the sentence and then asked you to classify the sentence. The explanation is taken from [here](https://stackoverflow.com/a/55351254/13858953)
 - You then make some lists and begin iterating over User Baskets converted to batches
 - The ub item contains baskets, lengths and user ids
 - In the already instantiated Dream Model (dr_model) you pass the 3 entries
