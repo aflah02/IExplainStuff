@@ -131,7 +131,7 @@
 ![RPN and RoIs](https://miro.medium.com/max/516/1*WJsEQnhr4puR4k-29uD80Q.png)
 - Then FPN exploits lateral connections to build the top-down feature pyramid and tackles the scale-variance problem.
 - A multi-task loss function is used to optimize the network given by - 
-![Loss Function](./Assets/QDTrackloss.png)
+![Loss Function](/Assets/QDTrackloss.png)
 
 ### 3.2 Quasi-dense Similarity Learning
 
