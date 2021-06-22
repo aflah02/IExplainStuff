@@ -1,6 +1,6 @@
 Find me [Here](https://github.com/aflah02)
 
-Object Dectection Papers - 
+Object Detection Papers - 
 - [Quasi-Dense Similarity Learning for Multiple Object Tracking (QDTrack)](https://aflah02.github.io/IExplainStuff/QDTrack)
 
 NLP Related Papers - 
