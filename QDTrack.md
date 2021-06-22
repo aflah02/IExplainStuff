@@ -224,3 +224,88 @@ Let's try to make some sense of what we are doing
 - This process has a downfall of creating duplicate feature embeddings to deal with which we do inter class duplicate removal using NMS.
 
 - The IoU threshold for NMS is 0.7 for objects with high confidence (larger than 0.5) and 0.3 for objects with lower detection confidence (lower than 0.5).
+
+## 4. Experiments
+
+- Starting with MOT the model is tested on BDD100K, Waymo and TAO.
+
+### 4.1 Datsets
+
+***MOT***
+- MOT17 and MOT16 were used. The dataset has 7 Videos (5316 Images) for training and 7 Videos (5919 Images) for testing. Pedestrians are evaluated using this and the frame rate is 14-30 FPS.
+
+***BDD100K***
+- It has 8 categories for evaluation.
+- Detection set has 70000 images and the tracking set has 1400 Videos (278k images) for training, 200 Videos (40k images) for validation, and 400 Videos (80k images) for testing.
+- Frame rate is 30 FPS annotated at 5 FPS
+
+***Waymo***
+- Images from 5 different cameras from 5 different directions namely front, front left, front right, side left and side right.
+- 3990 Videos (790k images) for training, 1010 Videos (200k images) for validation and 750 Videos (148k images) for testing.
+- 3 Classes for annotation which are used in evaluation.
+- Annotated at 10 FPS
+
+***TAO***
+- 482 Classes to classify into (subset of LVIS Dataset).
+- It has 400 Videos (216 Classes in Training Set), 988 Videos (302 Classes in Validation Set) and 1419 Videos (369 Classes in Testing Set)
+- Not all classes overlap
+- Annotation at 1 FPS
+- Objects are in Long Tail Distribution where 1/2 of the objects are people while 1/6 are cars.
+
+![Long Tail Distribution](https://miloszkrasinski.com/wp-content/uploads/2015/09/the-long-tail-effect.jpg)
+
+### 4.2 Implementation Details
+
+- Built on top of ResNet-50
+
+![ResNet-50](https://www.researchgate.net/publication/338603223/figure/fig1/AS:847598516711425@1579094642237/ResNet-50-architecture-26-shown-with-the-residual-units-the-size-of-the-filters-and.png)
+
+- 128 RoIs chosen from the Key Frame as training samples and 256 RoIs from the Reference Frame with a positive-negative ratio of 1 as contrastive targets.
+
+- IoU Balanced Sampling is used to sample RoIs.
+
+![IoU Balanced Sampling](https://www.researchgate.net/profile/Wanli-Ouyang/publication/338503788/figure/fig3/AS:885838741245952@1588211822418/Visualization-of-training-samples-under-random-sampling-and-IoU-balanced-sampling.png)
+
+- Feature Embedding extraction is done using 4conv-1fc head with group normalization
+
+- There are 256 Channels for embedding features
+
+- The hyperparameters are as follows: Batch Size 16, Initial Learning Rate 0.02 for 12 epochs which is reduced by 0.1 after 8 and 11 epochs.
+
+- Originial Image is used without any scaling
+
+- Only Data Augmentation done is Horizontal Flipping
+
+- Pretrained on ImageNet for training
+
+- A new track is only initialized if confidence > 0.8
+
+- Feature embeddings are updated online with a momentum of 0.8
+
+- The standard procedure is followed on MOT1 to get results comparable to other papers. Images are randomly resizes, longer side cut to 1088 and aspect ratio remains unchanged during training and inference. Random Horizontal Flipping as well as Color Jittering is done where we randomly change the brightness, contrast and saturation of an image.
+
+- No extra data apart from a pre-trained model from COCO was used. The rules don't consider COCO as additional training data and it is heaviliy used. COCO is a large-scale object detection, segmentation, and captioning dataset.
+
+- On the TAO Dataset the shorter side of the image is randomly rescaled between 640 and 800. At inference time shorter side is rescaled to 800. LVIS pre-trained model is used, however overfitting was frequently noticed. So the authors decided to freeze the model and only train the embeddings head to get instance representations.
+
+### 4.3 Main Results
+
+- Method outperformed all benchmarks.
+
+- Scores can be seen in the paper key observations from each dataset are mentioned below:
+
+***MOT***
+
+- Recent State of the Art CenterTrack is outperformed on MOTA and IDF1 on MOT17 benchmarks.
+
+***BDD100K***
+
+- Outperformed the champion of BDD100K 2020 MOT Challenge (madamada) by a large margin but with a simple detector which shows that this method has much more stable object tracking.
+
+***Waymo***
+
+- The Model with ResNet-101 and deformable convolution (DCN) has performance on par with Champion of Waymo 2020 2D Tracking Challenge (HorizonMOT) but only with a simple single model.
+
+***TAO***
+
+- A large improvement was noticed on frequently seen classes but poor performance on tail classes averages it out giving a new better direction of research.
