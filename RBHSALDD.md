@@ -33,5 +33,49 @@
 
 ### Hate Speech & Abusive Language Datasets
 
-- 
+- The paper focuses on Twitter Datasets which is widely used for these purposes
+
+***Waseem and Hory 2016***
+- 130k tweets containing one of 17 hateful terms.
+- Annotated by themselves
+- Reviewes by a 25 year old womemn studying gender studies and a nonactivist feminist.
+- 16,849 tweets labelled either racist, sexist or neither
+- To account for bias Waseem relabelled 2876 tweets
+- Annotated by feminist and anti-racism activists
+- Fourth category of racism and sexism was added
+- Dataset has about 6909 tweets
+
+***Davidson et al. (2017)***
+- Collected tweets having words from the [HateBase](https://hatebase.org/).
+- To avoid bias crowdworkers were instructed not to straight away label something based on word phrases rather use the overall tweet and inferred context.
+- 24,783 annotated tweets are present which are classified as either hate speech, offensive language or neither.
+
+***Golbeck et al. (2017)***
+-  Tweets were selected using ten keywords and phrases related to anti-black racism, Islamophobia, homophobia, anti-semitism, and sexism.
+- Initial coding scheme involved multiple classes such as threats or hate speech.
+- Finally the authors went with a binary approach of harassment or non-harassment label.
+- 20,360 Handlabelled tweets are present.
+
+***Founta et al. (2018)***
+- Randomly chose tweets having words from the HateBase lexicon.
+- They criticized old works where labels were added in an ad hoc fashion
+- They first allowed each tweet to lie in multiple classes.
+- They then analyzed overlaps between classes and ended up with 4 classes abusive, hateful, spam and normal.
+- Their database of 91,951 tweets is used in this paper.
+
+### Training Classifiers
+- A classifier is trained for each dataset
+- Logistic Regression is used along with bag-of-word features. In bag-of-word model, a text is represented as the bag of its words, disregarding grammar and even word order but keeping multiplicity.
+- While using more complex models might be better but recall the problem was with our dataset and biases will inevitably creep in.
+- Embeddings are not used as some research has shown bias in pretrained embeddings.
+- Each tweet is preprocessed by removing URLS and Mentions and replacing them with placeholders.
+- We form a TF-IDF matrix out of each dataset allowing a maximum of 10000 features. TFIDF, short for term frequency–inverse document frequency, is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus.
+- 80% of the dataset is used for training while rest is used for validation.
+- Model is trained using [Stratified 5-Fold Cross Validation](https://machinelearningmastery.com/k-fold-cross-validation/).
+- Grid search is performed over different regularization set parameters to find best performing model.
+- For each dataset we find model with best F1 score and we train it using all data. 
+- Their performace on the 20% held out validation set is recorded in Table 1.
+- It was noticed hate speech and harassment is difficult to detect which is understandable since it can be easily confused as offensive text.  
+
+![Classifier Performance](Assets/NLP1Tab1.PNG)
 
