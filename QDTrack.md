@@ -309,3 +309,13 @@ Let's try to make some sense of what we are doing
 ***TAO***
 
 - A large improvement was noticed on frequently seen classes but poor performance on tail classes averages it out giving a new better direction of research.
+
+### 4.4 Ablation Studies
+
+- **What is an Ablation Study?** In artificial intelligence, particularly machine learning, ablation is the removal of a component of an AI system. An ablation study studies the performance of an AI system by removing certain components, to understand the contribution of the component to the overall system.
+
+- BDD100K Validation Set was used to test the different model components.
+
+**Importance of Quasi-Dense Matching**
+
+- Improves overall IDF1 by 4.8 points which is indicative of improved feature embeddings and enables more accurate associations.
