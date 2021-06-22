@@ -64,6 +64,7 @@
 - Their database of 91,951 tweets is used in this paper.
 
 ### Training Classifiers
+
 - A classifier is trained for each dataset
 - Logistic Regression is used along with bag-of-word features. In bag-of-word model, a text is represented as the bag of its words, disregarding grammar and even word order but keeping multiplicity.
 - While using more complex models might be better but recall the problem was with our dataset and biases will inevitably creep in.
@@ -79,3 +80,57 @@
 
 ![Classifier Performance](Assets/NLP1Tab1.PNG)
 
+### Race Dataset
+
+- We use a tweet dataset labelled by race to measure racial biases in the classifier.
+- The tweets were geolocated and then the different ethnic proportions in that area were retrieved.
+- The model was trained to learn the different language styles of each ethnicity.
+- We then get the posterior proportion of language of each ethnic group in each tweet.
+- **Their validation analyses indicate
+that tweets with a high posterior proportion
+of non-Hispanic black language exhibit lexical,
+phonological, and syntactic variation consistent
+with prior research on AAE.**
+- The dataset had about 59.2 Million Tweets
+- **They defined a user as likely non-Hispanic black if the average posterior proportion across all of their tweets for the non-Hispanic black language model is >= 0.80 (and <= 0.10 Hispanic and Asian combined) and as non-Hispanic white using the same formula but for the white language model.**
+- For memory reasons the authors only focused on a set of 1.1 Million tweets written by people
+who generally use non-Hispanic black language
+and 14.5m tweets written by users who tend to use
+non-Hispanic white language.
+- These datasets are then referred to as black-aligned and white-aligned which reflects that this particular set consists a language style associated with a particular group.
+
+### Experiments
+
+- Essentially we go back to our original mission, is there a bias? To check that we see if a particular tweet being predicted to be something has anything to do with it's racial alignment.
+- So we fall back on our trusty null hypothesis toolkit, here the paper does a very good job of explaining it itself with all the proper equations as can be seen below - 
+
+![Null and Alternate Hypothesis](Assets/NLP1Text1.PNG)
+
+- To explain this a bit although I highly encourage you to read it yourself the null hypothesis is written mathematically and we explore the two possibilities of it being bending on either side and it's implications respectively being either white-aligned tweets are classified more often or either the black-aligned ones are.
+
+- We then test the hypothesis using bootstrap sampling to find out how many tweets are belonging to a particular class according to the model.
+
+- The mathematical details can be seen in the paper for the same but essentially we compare the proportion, do a t-test and other statistical techniques are used.
+
+- Another experiment brought up two results. Certain racial slurs and sexist words were much more prevelant in some sets, hence imbalancing the dataset itself. Since these words are linked to negative sentiments they skew our dataset and hence introduce bias inevitably.
+
+## Results
+
+- We found large statistical distinctions between the two racial alignments meaning that black-aligned tweets are much more frequently classified to be negative over white-aligned ones.
+
+- In only one case there was a minor difference with white-aligned ones being worse off however even there black-aligned ones are more likely to be classfied as sexist.
+
+- The result table below shows it evidently - 
+
+![Experiment 1](Assets/NLP1Result.PNG)
+
+![Experiment 2](Assets/NLP1Result2.PNG)
+
+## Discussion - 
+
+- There was a consistent, systematic bias in observations in all datasets hinting to a huge overall problem with our models when deployed online.
+- Certain phrases associated and used more by a certain ethnic group skews the dataset and hence adds bias.
+- The second experiment also ascertained that even if we use tweets which have the keywords still one side is more often classified as negative.
+- Racism prediction was not very effective and a proable cause is that the data labelled racist was more anti-muslim in nature than anti-black. 
+- The crux of the problem is AAE tweets are much more likely to use certain words which our model learns to classify as negative very quickly and doesn't update it's beliefs.
+- Over different datasets very interesting observations are well explained in the paper and deserve a read.
