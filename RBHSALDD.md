@@ -134,3 +134,27 @@ non-Hispanic white language.
 - Racism prediction was not very effective and a proable cause is that the data labelled racist was more anti-muslim in nature than anti-black. 
 - The crux of the problem is AAE tweets are much more likely to use certain words which our model learns to classify as negative very quickly and doesn't update it's beliefs.
 - Over different datasets very interesting observations are well explained in the paper and deserve a read.
+
+## Conclusion
+
+- Evidence of substantial racial bias is found
+- Bias remains even when comparing tweets with certain key words
+- Caution is needed when using this model for real world deployment as it is prone to mistakes and misclassifications
+- Apart from extra penalising African Americans the authors also suspect other ethnic groups might also be at risk
+- The problem arises as we use keywords in building those datasets which is not very representative of the data itself
+- In the HateBase lexicon also AAE is over represented which might cause this as they were oversampled due to some keywords
+- Another potential cause is bias brought by annotators and the paper shows some data to back this claim as well
+- The annotator workplace is also a point to question since they might've not been very English proficient in some cases being in Venenzuela
+- Over different datasets the classified proportion varied hugely from 1% to 18% suggesting lack of generalization on training data
+- This brings a point of knowing how a particular abuse is used in some culture, where it might not be as hateful as it may be to some other.
+- The 'n-word' is a case in itself as it may vary between polar opposite meanings depending on context and it's slight modifications are representative of white supremacy mentality while some are so common that you'll find people referring to each other using it in the ethnic group.
+- So considering the word itself hateful biases our data as it is a widely used word in AAE.
+- This brings us back to the root of everything, context, context matters and we need to find a way to be able to leverage that. Without context brute-forchish methods are bound to be lacking in some way.
+
+## Limitations
+
+- Since the dataset lacked racial info. about the tweet authors we might very well have people who tweet in both AAE ans SAE.
+- The second experiment though looks pretty alluring may not be a result of bias and rather the words which are used to classify tweets as abusive or not might just be the words which are used to predict the race, making it not an issue of bias rather a problem of different negative classes in different datasets.
+- Some bias might be removed with more advanced modelling techniques
+- We'll also need to look at what keywords did our classifier learn to look for in negative samples and that might give us more insights
+- This work was limited to racial bias however with further work we can look for other biases as well 
