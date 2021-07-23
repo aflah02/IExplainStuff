@@ -16,6 +16,6 @@ Essays I wrote for my Communications Class -
 
 - [Man vs Man-Eating Tigers: An Ethical Dilemma](https://aflah02.github.io/IExplainStuff/ManVsManEatingTiger)
 
-- [Power of Introverts](https://aflah02.github.io/IExplainStuff/PowerofIntroverts.md)
+- [Power of Introverts](https://aflah02.github.io/IExplainStuff/PowerofIntroverts)
 
-- [Collaborative Learning Platforms such as Wikipedia are The Future of Education](https://aflah02.github.io/IExplainStuff/WikiCollaborativeLearning.md)
+- [Collaborative Learning Platforms such as Wikipedia are The Future of Education](https://aflah02.github.io/IExplainStuff/WikiCollaborativeLearning)
