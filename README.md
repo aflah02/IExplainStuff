@@ -12,7 +12,7 @@ Explanation for Code Bases of Models -
 
 Essays I wrote for my Communications Class - 
 
--[Should any Form of Censorship over Artistic Expression be Completely Done Away?](https://aflah02.github.io/IExplainStuff/ArtisticCensorship)
+- [Should any Form of Censorship over Artistic Expression be Completely Done Away?](https://aflah02.github.io/IExplainStuff/ArtisticCensorship)
 
 - [Man vs Man-Eating Tigers: An Ethical Dilemma](https://aflah02.github.io/IExplainStuff/ManVsManEatingTiger)
 
