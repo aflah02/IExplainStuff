@@ -8,6 +8,7 @@ NLP Related Papers -
 
 - [Thou Shalt Not Hate: Countering Online Hate Speech (Brief Overview of Non Technical Aspects)](https://aflah02.github.io/IExplainStuff/TSNH)
 
+- [Emotionally Informed Hate Speech Detection: A Multi‑target Perspective - Paper Summary](https://aflah02.github.io/IExplainStuff/EIHSD.pdf)
 Explanation for Code Bases of Models - 
 
 - [A Dynamic Recurrent Model for Next Basket Recommendation (DREAM)](https://aflah02.github.io/IExplainStuff/DREAM-code)
